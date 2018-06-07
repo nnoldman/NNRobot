@@ -4,26 +4,31 @@ using System.Collections.Generic;
 namespace NNRobot {
 
 public interface AnswerInterface {
-    void Talk(string content);
+    void Talk(Robot robot, string content);
 }
 
 public class Robot {
-    private AnswerInterface answerInterface_;
-    private Stack<string> lateWords_ = new Stack<string>();
     private Nerve.Brain brain_ = new Nerve.Brain();
 
+    public string GetName() {
+        return this.brain_.GetCoreGroup().GetName();
+    }
+
     public Robot(string name) {
-        var myName = new Knowledge.Point();
-        myName.AddName(name);
-        this.brain_.GetCoreGroup().AddPoint(myName);
+        this.brain_.SetShell(this);
+        this.brain_.GetCoreGroup().AddName(name);
     }
 
     public void SetAnswer(AnswerInterface answer) {
-        this.answerInterface_ = answer;
+        this.brain_.SetAnswer(answer);
+    }
+
+    public void Dump() {
+        this.brain_.Dump();
     }
 
     public void OnAsk(string words) {
-        this.lateWords_.Push(words);
+        this.brain_.OnInput(words);
     }
 
     public void Learn(string something) {
@@ -32,7 +37,8 @@ public class Robot {
     public void Learn(string question, string answer) {
     }
 
-    public void Think() {
+    public void Close() {
+        this.brain_.Close();
     }
 }
 }

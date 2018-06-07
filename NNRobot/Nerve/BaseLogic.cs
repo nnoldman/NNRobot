@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NNRobot.Nerve {
+internal class BaseLogic {
+    public class Operation {
+    }
+
+    public class Value {
+        public virtual bool IsTrue() {
+            return false;
+        }
+    }
+
+    public class IsTrue: Operation {
+        public bool Calc(Value a) {
+            return a.IsTrue();
+        }
+    }
+
+    public class OperationOr : Operation {
+        public static bool Calc(Value a, Value b) {
+            return a.IsTrue() || b.IsTrue();
+        }
+    }
+
+    public class OperationAnd : Operation {
+        public static bool Calc(Value a, Value b) {
+            return a.IsTrue() && b.IsTrue();
+        }
+    }
+}
+}

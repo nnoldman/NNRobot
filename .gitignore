@@ -1,3 +1,4 @@
 /.vs/NNRobot/v15/*.suo
 sqlite3
 obj
+.vs
