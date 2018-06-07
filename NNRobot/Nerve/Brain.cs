@@ -14,6 +14,7 @@ internal class Brain {
     private bool running_;
     private Robot shell_;
     private Dictionary<string, Unit> units_ ;
+    private NCFrame.IDGenerator idGenerator_ = new NCFrame.IDGenerator();
 
     public Brain() {
         this.store_ = new Knowledge.Store();
@@ -50,6 +51,11 @@ internal class Brain {
             this.answerInterface_.Talk(this.shell_, it.Value.ToString()) ;
     }
 
+    public void Clear() {
+        this.units_.Clear();
+        this.idGenerator_.Clear();
+    }
+
     public void OnInput(string content) {
         if (string.IsNullOrEmpty(content))
             return;
@@ -75,17 +81,18 @@ internal class Brain {
         for(int i = 0; i < len; ++i) {
             if(!signal.processedIndices[i]) {
                 sb.Append(signal.content[i]);
-                if(i == len - 1)
+                if(i == len - 1 && sb.Length > 0)
                     words.Add(sb.ToString());
             } else {
-                words.Add(sb.ToString());
+                if(sb.Length > 0)
+                    words.Add(sb.ToString());
                 sb.Clear();
             }
         }
 
         for(int i = 0; i < words.Count; ++i) {
             var word = words[i];
-            var unit = Unit.MakeUnit(word);
+            var unit = this.MakeUnit(word);
             if(!this.units_.ContainsKey(word)) {
                 this.units_.Add(word, unit);
             }
@@ -138,7 +145,7 @@ internal class Brain {
             var unitParams = Newtonsoft.Json.JsonConvert.DeserializeObject<UnitParams>(content);
             if(unitParams != null) {
                 foreach(var it in unitParams.units) {
-                    var unit = Unit.MakeUnit(it);
+                    var unit = this.MakeUnit(it);
                     this.units_.Add(it.content, unit);
                 }
             }
@@ -147,7 +154,20 @@ internal class Brain {
     }
 
     public void AddBaseLogic() {
-        var define = Unit.MakeUnit("是");
+        var define = this.MakeUnit("是");
+    }
+
+    public  Unit MakeUnit(string content, int id = -1) {
+        var ret = NCFrame.PoolMgr.Instance.Require<Unit>();
+        ret.id = id == -1 ? idGenerator_.Require() : id;
+        ret.content = content;
+        return ret;
+    }
+
+    public  Unit MakeUnit(UnitParam param) {
+        var ret = MakeUnit(param.content, param.id);
+        ret.hitTimes = param.hitTimes;
+        return ret;
     }
 }
 }

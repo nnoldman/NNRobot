@@ -27,6 +27,10 @@ public class Robot {
         this.brain_.Dump();
     }
 
+    public void Clear() {
+        this.brain_.Clear();
+    }
+
     public void OnAsk(string words) {
         this.brain_.OnInput(words);
     }

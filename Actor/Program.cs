@@ -14,10 +14,14 @@ public class Program {
         do {
             string content = Console.ReadLine();
             if(content.Length > 0) {
-                if (content.ToLower() == "quit")
+                if (content.ToLower() == "-quit")
                     break;
-                if (content.ToLower() == "dump") {
+                if (content.ToLower() == "-dump") {
                     robot.Dump();
+                    continue;
+                }
+                if (content.ToLower() == "-clear") {
+                    robot.Clear();
                     continue;
                 }
             }

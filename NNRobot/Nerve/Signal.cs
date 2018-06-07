@@ -22,7 +22,7 @@ internal class Signal {
 
     public void SetComplete(int index, int len = 1) {
         int count = len == -1 ? this.content.Length : len;
-        for(int i = 0; i < count; ++i) {
+        for(int i = index; i < index + count; ++i) {
             this.processedIndices[i] = true;
         }
     }
