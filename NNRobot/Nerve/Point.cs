@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace NNRobot.Nerve {
-internal class Unit {
+internal class Point {
     internal int id;
     internal string content;
     internal int hitTimes = 0;
@@ -17,7 +17,7 @@ internal class Unit {
     public int GetID() {
         return this.id;
     }
-    public int GetHitTiemes() {
+    public int GetHitTimes() {
         return this.hitTimes;
     }
 

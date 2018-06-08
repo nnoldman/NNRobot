@@ -13,14 +13,14 @@ internal class Brain {
     private Thread thinkTread_;
     private bool running_;
     private Robot shell_;
-    private Dictionary<string, Unit> units_ ;
+    private Dictionary<string, Point> units_ ;
     private NCFrame.IDGenerator idGenerator_ = new NCFrame.IDGenerator();
 
     public Brain() {
         this.store_ = new Knowledge.Store();
         this.singals_ = new Queue<Signal>();
         this.signalLocker_ = new object();
-        this.units_ = new Dictionary<string, Unit>();
+        this.units_ = new Dictionary<string, Point>();
 
         this.thinkTread_ = new Thread(this.Think);
         this.thinkTread_.Start();
@@ -131,7 +131,7 @@ internal class Brain {
                 var param = new UnitParam();
                 param.id = it.Value.GetID();
                 param.content = it.Key;
-                param.hitTimes = it.Value.GetHitTiemes();
+                param.hitTimes = it.Value.GetHitTimes();
                 unitParams.units.Add(param);
             }
             var content = Newtonsoft.Json.JsonConvert.SerializeObject(unitParams, Newtonsoft.Json.Formatting.Indented);
@@ -157,14 +157,14 @@ internal class Brain {
         var define = this.MakeUnit("是");
     }
 
-    public  Unit MakeUnit(string content, int id = -1) {
-        var ret = NCFrame.PoolMgr.Instance.Require<Unit>();
+    public  Point MakeUnit(string content, int id = -1) {
+        var ret = NCFrame.PoolMgr.Instance.Require<Point>();
         ret.id = id == -1 ? idGenerator_.Require() : id;
         ret.content = content;
         return ret;
     }
 
-    public  Unit MakeUnit(UnitParam param) {
+    public  Point MakeUnit(UnitParam param) {
         var ret = MakeUnit(param.content, param.id);
         ret.hitTimes = param.hitTimes;
         return ret;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NNRobot.Nerve {
 internal class Connection {
-    public Unit point;
+    public Point point;
     public int threshould;
     public int hitTimes;
 

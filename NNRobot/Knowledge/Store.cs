@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace NNRobot.Knowledge {
-public class Store: Point {
-    private Knowledge.Group coreGroup_ = new Group();
+public class Store: Define {
+    private Group core_ = new Group();
     private List<Group> groups_ = new List<Group>();
 
     public void AddGroup(Group group) {
@@ -12,11 +12,11 @@ public class Store: Point {
     }
 
     public Store() {
-        this.AddGroup(this.coreGroup_);
+        this.AddGroup(this.core_);
     }
 
     public Group GetCoreGroup() {
-        return this.coreGroup_;
+        return this.core_;
     }
 }
 }
